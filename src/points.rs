@@ -1,11 +1,10 @@
-
 //use std::io;
 use std::thread;
 use std::time;
 use std::f64;
 use std::ops::Add;
 
-#[derive(Clone,Copy)]
+#[derive(Clone, Copy)]
 struct Point {
     x: f64,
     y: f64,
@@ -21,15 +20,18 @@ impl Point {
     }
 
     fn length(&self) -> f64 {
-        f64::sqrt( self.x*self.x + self.y*self.y )
+        f64::sqrt(self.x * self.x + self.y * self.y)
     }
 }
 
 impl Add for Point {
     type Output = Point;
 
-    fn add( self, other: Point ) -> Point {
-        Point { x: self.x + other.x, y: self.y + other.y }
+    fn add(self, other: Point) -> Point {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
     }
 }
 
@@ -44,13 +46,12 @@ fn add_points() -> () {
     assert_eq!(p3.y, p1.y + p2.y);
 }
 
-fn main()
-{
+fn main() {
     let p1 = Point::origin();
     let p2 = Point { x: 1.0, y: 2.0 };
-    let mut p3 = Point::new( 3.0, 4.0 );
+    let mut p3 = Point::new(3.0, 4.0);
 
     p3 = p1 + p2;
 
-    println!("Answer: {}", p3.length() );
+    println!("Answer: {}", p3.length());
 }
