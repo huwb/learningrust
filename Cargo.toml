@@ -1,0 +1,5 @@
+[package]
+
+name = "learningrust"
+version = "0.0.1"
+authors = [ "Huw Bowles <huw.bowles@gmail.com>" ]
