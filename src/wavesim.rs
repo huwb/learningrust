@@ -1,6 +1,6 @@
 use std::thread;
 use std::time;
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 struct Sim {
     dx: f32,
@@ -152,7 +152,7 @@ fn do_measurement(dt: &f32, fr: f32, dx: f32, c: f32) {
     }
 }
 
-fn main() {
+fn run_experiments() {
     let now = Instant::now();
 
     println!("C\tdt\tdx\tt\tave_speed");
@@ -170,7 +170,7 @@ fn main() {
     let frs = [0.995, 0.997, 0.999, 0.9999];
     let dxs = [0.05, 0.1, 0.25, 0.5, 1.0, 2.0];
 
-    let mut handles: Vec<std::thread::JoinHandle<_>> = Vec::new();
+    let mut handles: Vec<thread::JoinHandle<_>> = Vec::new();
 
     for c in cs.iter() {
         for dt in dts.iter() {
