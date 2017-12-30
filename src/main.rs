@@ -1,28 +1,7 @@
-use std::thread;
-
-fn run() -> () {
-    let handles: Vec<_> = (0..10)
-        .map(|_| {
-            thread::spawn(|| {
-                let mut x = 0;
-                for _ in 0..5_000_000 {
-                    x += 1;
-                }
-                x
-            })
-        })
-        .collect();
-
-    for h in handles {
-        println!(
-            "Thread finished with count = {}",
-            h.join().map_err(|_| "Could not join a thread!").unwrap()
-        );
-    }
-}
+pub mod guessing_game;
 
 fn main() {
-    run();
+    guessing_game::run_game();
 
-    println!("Done!");
+    println!("hello");
 }

@@ -2,9 +2,9 @@ extern crate rand;
 
 use std::io;
 use std::cmp::Ordering;
-use rand::Rng;
+use self::rand::Rng;
 
-fn main() {
+pub fn run_game() {
     println!("Guess the number!");
     println!("-===============-");
 
