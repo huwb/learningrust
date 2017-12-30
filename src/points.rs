@@ -1,10 +1,7 @@
-//use std::io;
-use std::thread;
-use std::time;
 use std::f64;
 use std::ops::Add;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 struct Point {
     x: f64,
     y: f64,
@@ -48,10 +45,9 @@ fn add_points() -> () {
 
 fn main() {
     let p1 = Point::origin();
-    let p2 = Point { x: 1.0, y: 2.0 };
-    let mut p3 = Point::new(3.0, 4.0);
+    let p2 = Point::new(1.0, 2.0);
+    let p3 = p1 + p2;
 
-    p3 = p1 + p2;
-
-    println!("Answer: {}", p3.length());
+    println!("Answer: {:?}", p3);
+    println!("Length: {}", p3.length());
 }
