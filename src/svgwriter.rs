@@ -52,13 +52,12 @@ struct PolyLine {
 impl SvgWriter for PolyLine {
     fn write(&self) {
         let myfold = |s: String, p: &Point| -> String {
-            if s.len() == 0 {
-                format!("{}", p)
-            } else {
-                format!("{}, {}", s, p)
+            match (&s, &p) {
+                (s, p) if s.len() > 0 => format!("{}, {}", s, p),
+                (_, p) => format!("{}", p),
             }
         };
-
+        
         let points: String = self.points.iter().fold(String::from(""), myfold);
 
         println!("<polyline points=\"{}\">", points);
