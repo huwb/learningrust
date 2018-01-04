@@ -2,9 +2,9 @@ use std::f64;
 use std::ops::Add;
 
 #[derive(Clone, Copy, Debug)]
-struct Point {
-    x: f64,
-    y: f64,
+struct<T> Point {
+    x: T,
+    y: T,
 }
 
 impl Point {
