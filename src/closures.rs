@@ -1,6 +1,12 @@
 use std::thread;
 use std::time::Duration;
 
+pub fn run() {
+    let simulated_user_specified_value = 10;
+    let simulated_random_number = 7;
+    generate_workout(simulated_user_specified_value, simulated_random_number);
+}
+
 struct Cacher<T>
 where
     T: FnMut() -> usize,

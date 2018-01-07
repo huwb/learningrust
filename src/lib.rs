@@ -1,6 +1,7 @@
 pub mod generic_fn;
 pub mod closures;
 pub mod iterators;
+pub mod smart_pointers;
 
 pub fn run() {
     let hello;
@@ -17,9 +18,9 @@ pub fn run() {
     let largest = generic_fn::_largest_in_list(&list);
     println!("Largest: {}", largest);
 
-    let simulated_user_specified_value = 10;
-    let simulated_random_number = 7;
-    closures::generate_workout(simulated_user_specified_value, simulated_random_number);
+    // closures::run();
+
+    smart_pointers::run();
 }
 
 /// Returns the larger of the two strings
