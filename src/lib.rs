@@ -1,5 +1,6 @@
 pub mod generic_fn;
 pub mod closures;
+pub mod iterators;
 
 pub fn longest_string<'a>(x: &'a str, y: &'a str) -> &'a str {
     if x.len() > y.len() {
