@@ -3,7 +3,7 @@ use std::time::Duration;
 
 struct Cacher<T>
 where
-    T: Fn() -> usize,
+    T: FnMut() -> usize,
 {
     calculation: T,
     value: Option<usize>,
@@ -11,7 +11,7 @@ where
 
 impl<T> Cacher<T>
 where
-    T: Fn() -> usize,
+    T: FnMut() -> usize,
 {
     fn new(calculation: T) -> Cacher<T> {
         Cacher {
@@ -48,5 +48,60 @@ pub fn generate_workout(intensity: usize, random_number: usize) {
         } else {
             println!("Today, run for {} minutes!", calc_result.value());
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn cacher_starts_empty() {
+        let cacher = Cacher::new(|| 0);
+        // before calling value(), calculation result should be None
+        assert_eq!(cacher.value, None);
+    }
+
+    #[test]
+    fn cacher_first_call_populates() {
+        let mut closure_calls = 0;
+        let calc_result = 2;
+        let v;
+        {
+            let closure = || {
+                closure_calls += 1;
+                calc_result
+            };
+
+            let mut cacher = Cacher::new(closure);
+
+            v = cacher.value();
+        }
+
+        // calculation should have been executed once
+        assert_eq!(closure_calls, 1);
+
+        // and returned the right result
+        assert_eq!(v, calc_result);
+    }
+
+    #[test]
+    fn cacher_second_call_uses_cache() {
+        let mut closure_calls = 0;
+        {
+            let closure = || {
+                closure_calls += 1;
+                0
+            };
+
+            let mut cacher = Cacher::new(closure);
+
+            // value retrieved twice
+            cacher.value();
+            cacher.value();
+        }
+
+        // calculation should have only happened once
+        assert_eq!(closure_calls, 1);
     }
 }
