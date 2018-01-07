@@ -22,6 +22,17 @@ pub fn run() {
     closures::generate_workout(simulated_user_specified_value, simulated_random_number);
 }
 
+/// Returns the larger of the two strings
+///
+/// # Examples
+///
+/// ```
+/// use learningrust::longest_string;
+///
+/// fn main() {
+///     assert_eq!( longest_string("short", "long"), "short");
+/// }
+/// ```
 pub fn longest_string<'a>(x: &'a str, y: &'a str) -> &'a str {
     if x.len() > y.len() {
         x
@@ -30,10 +41,15 @@ pub fn longest_string<'a>(x: &'a str, y: &'a str) -> &'a str {
     }
 }
 
-#[test]
-fn test_longest_string() {
-    let x = "short";
-    let y = "long";
-    let longest = longest_string(x, y);
-    assert_eq!(longest, x);
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn longest_empty_strings() {
+        let x = "";
+        let y = "";
+        let longest = longest_string(x, y);
+        assert_eq!(longest, x);
+    }
 }
