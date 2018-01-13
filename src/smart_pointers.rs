@@ -11,6 +11,13 @@ impl MyList {
         MyList::Nil
     }
 
+    // i would have called this 'new' but function overloading is not supported
+    // in this way as it interferes with type inference. it is however possible
+    // to define multiple traits with the same function name.
+    fn from(value: i32) -> MyList {
+        MyList::Cons(value, Box::new(MyList::Nil))
+    }
+
     fn cons(value: i32, next: MyList) -> MyList {
         MyList::Cons(value, Box::new(next))
     }
@@ -19,7 +26,7 @@ impl MyList {
     fn add(list: MyList, value: i32) -> MyList {
         match list {
             MyList::Cons(val, boxed) => MyList::Cons(val, Box::new(MyList::add(*boxed, value))),
-            MyList::Nil => MyList::Cons(value, Box::new(MyList::Nil)),
+            MyList::Nil => MyList::from(value),
         }
     }
 
@@ -27,7 +34,7 @@ impl MyList {
     fn push(&mut self, value: i32) {
         match *self {
             MyList::Cons(_, ref mut boxed) => boxed.push(value),
-            MyList::Nil => *self = MyList::Cons(value, Box::new(MyList::Nil)),
+            MyList::Nil => *self = MyList::from(value),
         };
     }
 }
@@ -98,6 +105,9 @@ mod tests {
                 ))
             )
         );
+
+        let l = MyList::from(8);
+        assert_eq!(l, MyList::Cons(8, Box::new(MyList::Nil)));
     }
 
     #[test]
