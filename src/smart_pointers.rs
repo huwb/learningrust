@@ -6,33 +6,35 @@ enum MyList {
     Nil,
 }
 
+use self::MyList::{Cons, Nil};
+
 impl MyList {
     fn new() -> MyList {
-        MyList::Nil
+        Nil
     }
 
     // i would have called this 'new' but function overloading is not supported
     // in this way as it interferes with type inference. it is however possible
     // to define multiple traits with the same function name.
     fn from(value: i32) -> MyList {
-        MyList::Cons(value, Box::new(MyList::Nil))
+        Cons(value, Box::new(Nil))
     }
 
     fn cons(value: i32, next: MyList) -> MyList {
-        MyList::Cons(value, Box::new(next))
+        Cons(value, Box::new(next))
     }
 
     /// Add value to end of list
     fn add(list: MyList, value: i32) -> MyList {
         match list {
-            MyList::Cons(val, boxed) => MyList::Cons(val, Box::new(MyList::add(*boxed, value))),
-            MyList::Nil => MyList::from(value),
+            Cons(val, boxed) => Cons(val, Box::new(MyList::add(*boxed, value))),
+            Nil => MyList::from(value),
         }
     }
 
     /// Push value onto end of list, can be daisy chained
     fn push(&mut self, value: i32) -> &mut MyList {
-        if let MyList::Cons(_, ref mut boxed) = *self {
+        if let Cons(_, ref mut boxed) = *self {
             boxed.push(value);
         } else {
             *self = MyList::from(value);
@@ -118,20 +120,17 @@ mod tests {
 
     #[test]
     fn mylist_constructors() {
-        let l = MyList::cons(7, MyList::cons(3, MyList::cons(5, MyList::Nil)));
+        let l = MyList::cons(7, MyList::cons(3, MyList::cons(5, Nil)));
         assert_eq!(
             l,
-            MyList::Cons(
+            Cons(
                 7,
-                Box::new(MyList::Cons(
-                    3,
-                    Box::new(MyList::Cons(5, Box::new(MyList::Nil)))
-                ))
+                Box::new(Cons(3, Box::new(Cons(5, Box::new(MyList::Nil)))))
             )
         );
 
         let l = MyList::from(8);
-        assert_eq!(l, MyList::Cons(8, Box::new(MyList::Nil)));
+        assert_eq!(l, Cons(8, Box::new(MyList::Nil)));
     }
 
     #[test]
@@ -142,12 +141,9 @@ mod tests {
         l = MyList::add(l, 5);
         assert_eq!(
             l,
-            MyList::Cons(
+            Cons(
                 3,
-                Box::new(MyList::Cons(
-                    7,
-                    Box::new(MyList::Cons(5, Box::new(MyList::Nil)))
-                ))
+                Box::new(Cons(7, Box::new(Cons(5, Box::new(MyList::Nil)))))
             )
         );
     }
@@ -159,12 +155,9 @@ mod tests {
         l.push(6).push(8);
         assert_eq!(
             l,
-            MyList::Cons(
+            Cons(
                 9,
-                Box::new(MyList::Cons(
-                    6,
-                    Box::new(MyList::Cons(8, Box::new(MyList::Nil)))
-                ))
+                Box::new(Cons(6, Box::new(Cons(8, Box::new(MyList::Nil)))))
             )
         );
     }
@@ -185,7 +178,7 @@ mod tests {
 //     fn eq(&self, other: &MyList) -> bool {
 //         match (self, other) {
 //             (&MyList::Nil, &MyList::Nil) => true,
-//             (&MyList::Cons(v1, ref boxed1), &MyList::Cons(v2, ref boxed2)) => {
+//             (&Cons(v1, ref boxed1), &Cons(v2, ref boxed2)) => {
 //                 (v1 == v2) && (*boxed1 == *boxed2)
 //             }
 //             _ => false,
