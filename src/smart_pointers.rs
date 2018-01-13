@@ -42,7 +42,7 @@ impl MyList {
 }
 
 pub fn run() {
-    println!("yoyoyo");
+    println!("\nSMART POINTERS");
 
     let b = Box::new(5);
     println!("{}", b);
@@ -68,6 +68,15 @@ pub fn run() {
     let daname = MyBox::new(String::from("Yoheyo"));
     hello(&(*daname)[..]); // manually convert from MyBox<String> to &str
     hello(&daname); // deref coercion
+
+    let sp = CustomSmartPointer {
+        data: String::from("Yo yo yo, yo"),
+    };
+
+    println!("This is my sp data: {:?}", sp);
+    drop(sp);
+    // println!("Can i still access SP: {:?}", sp); // does not compile
+    println!("Done with sp");
 }
 
 struct MyBox<T>(T);
@@ -88,6 +97,17 @@ impl<T> Deref for MyBox<T> {
 
 fn hello(name: &str) {
     println!("Heyooooo {}", name);
+}
+
+#[derive(Debug)]
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Dropped CustomSmartPointer, data = {}", self.data);
+    }
 }
 
 #[cfg(test)]
