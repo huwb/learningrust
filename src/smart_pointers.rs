@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 #[derive(Debug, PartialEq)]
 enum MyList {
     Cons(i32, Box<MyList>),
@@ -41,6 +43,42 @@ pub fn run() {
     l = MyList::add(l, 33);
     l.push(11);
     println!("{:?}", l);
+
+    let x = 5;
+    let y = &x;
+    assert_eq!(x, 5);
+    assert_eq!(*y, x);
+
+    let y = Box::new(x);
+    assert_eq!(Box::new(x), y);
+    assert_eq!(x, *y);
+
+    let y = MyBox::new(x);
+    assert_eq!(x, *y);
+
+    let daname = MyBox::new(String::from("Yoheyo"));
+    hello(&(*daname)[..]); // manually convert from MyBox<String> to &str
+    hello(&daname); // deref coercion
+}
+
+struct MyBox<T>(T);
+
+impl<T> MyBox<T> {
+    fn new(x: T) -> MyBox<T> {
+        MyBox(x)
+    }
+}
+
+impl<T> Deref for MyBox<T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.0
+    }
+}
+
+fn hello(name: &str) {
+    println!("Heyooooo {}", name);
 }
 
 #[cfg(test)]
