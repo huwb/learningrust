@@ -32,16 +32,7 @@ impl Add for Point {
     }
 }
 
-#[test]
-fn add_points() -> () {
-    let p1 = Point::new(3.0, 4.0);
-    let p2 = Point::new(5.0, 6.0);
 
-    let p3 = p1 + p2;
-
-    assert_eq!(p3.x, p1.x + p2.x);
-    assert_eq!(p3.y, p1.y + p2.y);
-}
 
 fn main() {
     let p1 = Point::origin();
@@ -50,4 +41,30 @@ fn main() {
 
     println!("Answer: {:?}", p3);
     println!("Length: {}", p3.length());
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn add_points() {
+        let p0 = Point::origin();
+        let p1 = Point::new(3.0, 4.0);
+        let p2 = Point::new(5.0, 6.0);
+
+        let p3 = p0 + p1 + p2;
+
+        assert_eq!(p3.x, p1.x + p2.x);
+        assert_eq!(p3.y, p1.y + p2.y);
+    }
+
+    #[test]
+    fn copy_constructor() {
+        let p0 = Point::origin();
+        let p1 = p0;
+        // use p0 after assignment - check that it has been copied
+        assert_eq!(p0.length(), 0.0);
+        assert_eq!(p1.length(), 0.0);
+    }
 }
