@@ -27,3 +27,22 @@ pub fn run() {
     println!("b after: {:?}", b);
     println!("c after: {:?}", c);
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn runtime_mutable_borrow() {
+        // lazy for now - reuse run
+        run();
+    }
+
+    #[test]
+    #[should_panic]
+    fn runtime_two_mutable_borrows_panics() {
+        let value = Rc::new(RefCell::new(0));
+        let _borrow1 = value.borrow_mut();
+        let _borrow2 = value.borrow_mut();
+    }
+}
