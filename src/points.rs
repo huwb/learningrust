@@ -33,8 +33,9 @@ impl Add for Point {
 }
 
 
+pub fn run() {
+    println!("POINTS");
 
-fn main() {
     let p1 = Point::origin();
     let p2 = Point::new(1.0, 2.0);
     let p3 = p1 + p2;

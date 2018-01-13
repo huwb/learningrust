@@ -2,6 +2,7 @@ pub mod generic_fn;
 pub mod closures;
 pub mod iterators;
 pub mod smart_pointers;
+pub mod points;
 
 pub fn run() {
     let hello;
@@ -18,8 +19,8 @@ pub fn run() {
     let largest = generic_fn::_largest_in_list(&list);
     println!("Largest: {}", largest);
 
+    points::run();
     // closures::run();
-
     smart_pointers::run();
 }
 
