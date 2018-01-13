@@ -69,6 +69,7 @@ pub fn run() {
     hello(&(*daname)[..]); // manually convert from MyBox<String> to &str
     hello(&daname); // deref coercion
 
+
     let sp = CustomSmartPointer {
         data: String::from("Yo yo yo, yo"),
     };
@@ -113,6 +114,7 @@ impl Drop for CustomSmartPointer {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::rc::Rc;
 
     #[test]
     fn mylist_constructors() {
@@ -165,6 +167,17 @@ mod tests {
                 ))
             )
         );
+    }
+
+    #[test]
+    fn ref_count() {
+        let a = Rc::new(33);
+        assert_eq!(Rc::strong_count(&a), 1);
+        {
+            let _b = Rc::clone(&a);
+            assert_eq!(Rc::strong_count(&a), 2);
+        }
+        assert_eq!(Rc::strong_count(&a), 1);
     }
 }
 
