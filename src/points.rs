@@ -32,6 +32,15 @@ impl Add for Point {
     }
 }
 
+// This will kill Copy behaviour because Rust likes to keep copies ultra-simple
+// (i.e. memcpy), and if a struct has a destructor, or if any of its members have
+// a destructor, the copy is no longer simple.
+// https://www.reddit.com/r/rust/comments/5omcoy/new_to_rust_confused_by_copy_vs_move_and/
+// impl Drop for Point {
+//     fn drop(&mut self) {
+//         println!("Droppity-drop: {:?}", self);
+//     }
+// }
 
 pub fn run() {
     println!("POINTS");
