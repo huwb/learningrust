@@ -30,12 +30,14 @@ impl MyList {
         }
     }
 
-    /// Push value onto end of list
-    fn push(&mut self, value: i32) {
-        match *self {
-            MyList::Cons(_, ref mut boxed) => boxed.push(value),
-            MyList::Nil => *self = MyList::from(value),
-        };
+    /// Push value onto end of list, can be daisy chained
+    fn push(&mut self, value: i32) -> &mut MyList {
+        if let MyList::Cons(_, ref mut boxed) = *self {
+            boxed.push(value);
+        } else {
+            *self = MyList::from(value);
+        }
+        self
     }
 }
 
@@ -132,8 +134,7 @@ mod tests {
     fn mylist_push() {
         let mut l = MyList::new();
         l.push(9);
-        l.push(6);
-        l.push(8);
+        l.push(6).push(8);
         assert_eq!(
             l,
             MyList::Cons(
