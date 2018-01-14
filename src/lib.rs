@@ -9,6 +9,7 @@ pub mod rc_refcell;
 pub mod ref_cycles;
 pub mod threads_msg_passing;
 pub mod spring;
+pub mod threads_shared_state;
 
 pub fn run() {
     // longest_string::run();
@@ -18,5 +19,6 @@ pub fn run() {
     // limit_tracker::run();
     // rc_refcell::run();
     // threads_msg_passing::run();
-    spring::run();
+    // spring::run();
+    threads_shared_state::run();
 }
