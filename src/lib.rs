@@ -12,6 +12,7 @@ pub mod spring;
 pub mod threads_shared_state;
 pub mod state_pattern;
 pub mod state_pattern_rust;
+pub mod patterns_chapter;
 
 pub fn run() {
     // longest_string::run();
@@ -23,7 +24,9 @@ pub fn run() {
     // threads_msg_passing::run();
     // spring::run();
     // threads_shared_state::run();
-    state_pattern::run();
 
-    state_pattern_rust::run();
+    // state_pattern::run();
+    // state_pattern_rust::run();
+
+    patterns_chapter::run();
 }
