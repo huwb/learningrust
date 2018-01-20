@@ -57,8 +57,8 @@ fn check_thread_pool() {
         et.record_hit(2);
     }));
 
-    // wait for jobs to finish processing
-    tp.join();
+    // drop - wait for jobs to finish processing
+    drop(tp);
 
     let et = et.lock().unwrap();
 

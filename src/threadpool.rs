@@ -35,7 +35,7 @@ use self::Message::{NewJob, Terminate};
 
 pub struct ThreadPool {
     job_broadcast: Sender<Message>,
-    join_handles: Vec<JoinHandle<()>>,
+    join_handles: Vec<Option<JoinHandle<()>>>,
 }
 
 pub type Job = Box<FnBox + Send>;
@@ -63,7 +63,7 @@ impl ThreadPool {
 
         for _i in 0..thread_count {
             let ri = Arc::clone(&rx);
-            join_handles.push(::std::thread::spawn(move || {
+            join_handles.push(Some(::std::thread::spawn(move || {
                 loop {
                     let job = ri.lock().unwrap().recv().unwrap();
 
@@ -74,7 +74,7 @@ impl ThreadPool {
                         break;
                     }
                 }
-            }));
+            })));
         }
 
         ThreadPool {
@@ -89,10 +89,10 @@ impl ThreadPool {
             .send(NewJob(job))
             .expect("Failed to broadcast job.");
     }
+}
 
-    // add termination signal to end of job queue.
-    // any scheduled tasks will be completed and then threads will join.
-    pub fn join(self) {
+impl Drop for ThreadPool {
+    fn drop(&mut self) {
         // signal termination to each thread by sending None as a job
         for _ in &self.join_handles {
             self.job_broadcast
@@ -101,8 +101,10 @@ impl ThreadPool {
         }
 
         // come home little threadies
-        for handle in self.join_handles.into_iter() {
-            handle.join().expect("Failed to join thread");
+        for handle in &mut self.join_handles {
+            if let Some(handle) = handle.take() {
+                handle.join().expect("Failed to join thread");
+            }
         }
     }
 }
@@ -119,15 +121,15 @@ mod tests {
 
     #[test]
     fn create_then_join() {
-        let tp = ThreadPool::new(2);
-        tp.join();
+        ThreadPool::new(2);
     }
 
     #[test]
     fn run_trivial_job() {
+        let job_ran_ref = Arc::new(Mutex::new(false));
+
         // dispatch a simple job, do a join, check that the job executed
         let tp = ThreadPool::new(2);
-        let job_ran_ref = Arc::new(Mutex::new(false));
 
         {
             let job_ran_ref = Arc::clone(&job_ran_ref);
@@ -143,7 +145,7 @@ mod tests {
         assert!(*job_ran_ref.lock().unwrap() == false);
 
         // wait for execution to finish and join thread
-        tp.join();
+        drop(tp);
 
         // job flag should be set now
         assert!(*job_ran_ref.lock().unwrap());
