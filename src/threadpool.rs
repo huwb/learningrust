@@ -27,8 +27,14 @@ pub fn run() {
     sleep(Duration::from_millis(1000));
 }
 
+enum Message {
+    NewJob(Job),
+    Terminate,
+}
+use self::Message::{NewJob, Terminate};
+
 pub struct ThreadPool {
-    job_broadcast: Sender<Option<Job>>,
+    job_broadcast: Sender<Message>,
     join_handles: Vec<JoinHandle<()>>,
 }
 
@@ -61,9 +67,9 @@ impl ThreadPool {
                 loop {
                     let job = ri.lock().unwrap().recv().unwrap();
 
-                    if let Some(job) = job {
+                    if let NewJob(job) = job {
+                        // (*job)(); // this will compile one day, apparently
                         (job as Job).call_box();
-                    // (*job)(); // this will compile one day, apparently
                     } else {
                         break;
                     }
@@ -80,7 +86,7 @@ impl ThreadPool {
     pub fn dispatch(&self, job: Job) {
         // broadcast a job to be picked up by the next thread
         self.job_broadcast
-            .send(Some(job))
+            .send(NewJob(job))
             .expect("Failed to broadcast job.");
     }
 
@@ -88,9 +94,9 @@ impl ThreadPool {
     // any scheduled tasks will be completed and then threads will join.
     pub fn join(self) {
         // signal termination to each thread by sending None as a job
-        for _ in 0..self.join_handles.len() {
+        for _ in &self.join_handles {
             self.job_broadcast
-                .send(None)
+                .send(Terminate)
                 .expect("Failed to broadcast termination job.");
         }
 
