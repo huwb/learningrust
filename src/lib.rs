@@ -14,6 +14,7 @@ pub mod state_pattern;
 pub mod state_pattern_rust;
 pub mod patterns_chapter;
 pub mod threadpool;
+pub mod unsafety;
 
 pub fn run() {
     // longest_string::run();
@@ -31,5 +32,7 @@ pub fn run() {
 
     // patterns_chapter::run();
 
-    threadpool::run();
+    // threadpool::run();
+
+    unsafety::run();
 }
