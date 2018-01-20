@@ -13,6 +13,7 @@ pub mod threads_shared_state;
 pub mod state_pattern;
 pub mod state_pattern_rust;
 pub mod patterns_chapter;
+pub mod threadpool;
 
 pub fn run() {
     // longest_string::run();
@@ -28,5 +29,7 @@ pub fn run() {
     // state_pattern::run();
     // state_pattern_rust::run();
 
-    patterns_chapter::run();
+    // patterns_chapter::run();
+
+    threadpool::run();
 }
