@@ -10,7 +10,7 @@ pub fn run() {
     println!("ST:");
     let sw = Stopwatch::start_new();
     let results = primes_up_to(x);
-    let elapsed_st = sw.elapsed_ms::<f32>();
+    let elapsed_st = sw.ms();
     println!("{:?}", results);
     println!("Elapsed: {}ms", elapsed_st);
 
@@ -18,7 +18,7 @@ pub fn run() {
     println!("MT:");
     let sw = Stopwatch::start_new();
     let results = primes_up_to_mt(x, 4);
-    let elapsed_mt = sw.elapsed_ms::<f32>();
+    let elapsed_mt = sw.ms();
     println!("{:?}", results);
     println!("Elapsed: {}ms", elapsed_mt);
 

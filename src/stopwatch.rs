@@ -1,23 +1,5 @@
 extern crate time;
 
-use std::ops::Div;
-
-pub trait ConvertToFloat {
-    fn convert(x: u64) -> Self;
-}
-impl ConvertToFloat for f32 {
-    #[inline]
-    fn convert(x: u64) -> Self {
-        x as f32
-    }
-}
-impl ConvertToFloat for f64 {
-    #[inline]
-    fn convert(x: u64) -> Self {
-        x as f64
-    }
-}
-
 pub struct Stopwatch {
     start_time: u64,
 }
@@ -34,22 +16,22 @@ impl Stopwatch {
     }
 
     // elapsed time in nanoseconds
-    pub fn elapsed_ns<T: ConvertToFloat>(&self) -> T {
-        T::convert(time::precise_time_ns() - self.start_time)
+    pub fn ns(&self) -> f32 {
+        (time::precise_time_ns() - self.start_time) as f32
     }
 
     // elapsed time in microseconds
-    pub fn elapsed_us<T: ConvertToFloat + Div>(&self) -> T::Output {
-        T::convert(time::precise_time_ns() - self.start_time) / T::convert(1000)
+    pub fn us(&self) -> f32 {
+        (time::precise_time_ns() - self.start_time) as f32 / 1000f32
     }
 
     // elapsed time in milliseconds
-    pub fn elapsed_ms<T: ConvertToFloat + Div>(&self) -> T::Output {
-        T::convert(time::precise_time_ns() - self.start_time) / T::convert(1000000)
+    pub fn ms(&self) -> f32 {
+        (time::precise_time_ns() - self.start_time) as f32 / 1000000f32
     }
 
     // elapsed time in seconds
-    pub fn elapsed_s<T: ConvertToFloat + Div>(&self) -> T::Output {
-        T::convert(time::precise_time_ns() - self.start_time) / T::convert(1000000000)
+    pub fn s(&self) -> f32 {
+        (time::precise_time_ns() - self.start_time) as f32 / 1000000000f32
     }
 }
