@@ -1,44 +1,7 @@
-extern crate time;
-
 use threadpool::ThreadPool;
 use std::sync::Arc;
 use std::sync::Mutex;
-
-pub struct Stopwatch {
-    start_time: u64,
-}
-
-impl Stopwatch {
-    pub fn start_new() -> Stopwatch {
-        Stopwatch {
-            start_time: time::precise_time_ns(),
-        }
-    }
-
-    pub fn restart(&mut self) {
-        *self = Stopwatch::start_new();
-    }
-
-    pub fn elapse_ns(&self) -> f64 {
-        // elapsed time in nanoseconds
-        (time::precise_time_ns() - self.start_time) as f64
-    }
-
-    pub fn elapse_us(&self) -> f64 {
-        // elapsed time in microseconds
-        (time::precise_time_ns() - self.start_time) as f64 / 1000f64
-    }
-
-    pub fn elapse_ms(&self) -> f64 {
-        // elapsed time in milliseconds
-        (time::precise_time_ns() - self.start_time) as f64 / 1000000f64
-    }
-
-    pub fn elapse_s(&self) -> f64 {
-        // elapsed time in seconds
-        (time::precise_time_ns() - self.start_time) as f64 / 1000000000f64
-    }
-}
+use stopwatch::Stopwatch;
 
 pub fn run() {
     let x = 20000;
@@ -47,7 +10,7 @@ pub fn run() {
     println!("ST:");
     let sw = Stopwatch::start_new();
     let results = primes_up_to(x);
-    let elapsed_st = sw.elapse_ms();
+    let elapsed_st = sw.elapsed_ms::<f32>();
     println!("{:?}", results);
     println!("Elapsed: {}ms", elapsed_st);
 
@@ -55,7 +18,7 @@ pub fn run() {
     println!("MT:");
     let sw = Stopwatch::start_new();
     let results = primes_up_to_mt(x, 4);
-    let elapsed_mt = sw.elapse_ms();
+    let elapsed_mt = sw.elapsed_ms::<f32>();
     println!("{:?}", results);
     println!("Elapsed: {}ms", elapsed_mt);
 
