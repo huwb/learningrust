@@ -1,41 +1,65 @@
+extern crate time;
+
 use threadpool::ThreadPool;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+pub struct Stopwatch {
+    start_time: u64,
+}
+
+impl Stopwatch {
+    pub fn start_new() -> Stopwatch {
+        Stopwatch {
+            start_time: time::precise_time_ns(),
+        }
+    }
+
+    pub fn restart(&mut self) {
+        *self = Stopwatch::start_new();
+    }
+
+    pub fn elapse_ns(&self) -> f64 {
+        // elapsed time in nanoseconds
+        (time::precise_time_ns() - self.start_time) as f64
+    }
+
+    pub fn elapse_us(&self) -> f64 {
+        // elapsed time in microseconds
+        (time::precise_time_ns() - self.start_time) as f64 / 1000f64
+    }
+
+    pub fn elapse_ms(&self) -> f64 {
+        // elapsed time in milliseconds
+        (time::precise_time_ns() - self.start_time) as f64 / 1000000f64
+    }
+
+    pub fn elapse_s(&self) -> f64 {
+        // elapsed time in seconds
+        (time::precise_time_ns() - self.start_time) as f64 / 1000000000f64
+    }
+}
+
 pub fn run() {
     let x = 20000;
 
-    ::std::thread::sleep(::std::time::Duration::from_millis(2000));
+    ::std::thread::sleep(::std::time::Duration::from_millis(200));
     println!("ST:");
+    let sw = Stopwatch::start_new();
     let results = primes_up_to(x);
+    let elapsed_st = sw.elapse_ms();
     println!("{:?}", results);
+    println!("Elapsed: {}ms", elapsed_st);
 
-    ::std::thread::sleep(::std::time::Duration::from_millis(2000));
+    ::std::thread::sleep(::std::time::Duration::from_millis(200));
     println!("MT:");
+    let sw = Stopwatch::start_new();
     let results = primes_up_to_mt(x, 4);
+    let elapsed_mt = sw.elapse_ms();
     println!("{:?}", results);
+    println!("Elapsed: {}ms", elapsed_mt);
 
-
-    // let mut results_sorted = results.clone();
-    // results_sorted.sort();
-    // assert_eq!(results, results_sorted);
-
-
-    // let x = 100000008;
-
-    // println!("Is {} prime? Computing..", x);
-
-    // let prime = is_prime(x);
-
-    // if prime {
-    //     println!("{} is prime!", x);
-    // } else {
-    //     println!("{} is not prime, factors:", x);
-    //     println!("\t{:?}", factors(x));
-    // }
-
-    // println!("Primes up to {}:", x);
-    // println!("{:?}", primes_up_to(x));
+    println!("\nSummary - ST: {}, MT: {}", elapsed_st, elapsed_mt);
 }
 
 pub fn is_prime(x: i32) -> bool {
@@ -57,6 +81,7 @@ pub fn primes_up_to_mt(x: i32, thread_count: usize) -> Vec<i32> {
     assert!(x >= 0);
 
     let tp = ThreadPool::new(thread_count);
+
     let factors = Arc::new(Mutex::new(vec![]));
 
     for i in 2..x + 1 {
@@ -75,7 +100,7 @@ pub fn primes_up_to_mt(x: i32, thread_count: usize) -> Vec<i32> {
         .iter()
         .map(|item| *item)
         .collect();
-    
+
     // no guarantee that the results come back in order
     results.sort();
     results
