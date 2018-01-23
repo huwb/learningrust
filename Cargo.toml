@@ -8,3 +8,4 @@ authors = [ "Huw Bowles <huw.bowles@gmail.com>" ]
 
 rand = "0.3.0"
 time = "0.1.39"
+simple-stopwatch = "0.1.4"

@@ -1,7 +1,9 @@
+extern crate simple_stopwatch;
+
 use threadpool::ThreadPool;
 use std::sync::Arc;
 use std::sync::Mutex;
-use stopwatch::Stopwatch;
+use self::simple_stopwatch::Stopwatch;
 
 pub fn run() {
     let x = 20000;

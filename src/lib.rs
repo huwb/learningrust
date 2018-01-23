@@ -21,7 +21,6 @@ pub mod threadpool;
 pub mod unsafety;
 pub mod adv_lifetimes;
 pub mod prime;
-pub mod stopwatch;
 
 pub fn run() {
     // longest_string::run();
