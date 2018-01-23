@@ -21,6 +21,7 @@ pub mod threadpool;
 pub mod unsafety;
 pub mod adv_lifetimes;
 pub mod prime;
+pub mod adv_traits;
 
 pub fn run() {
     // longest_string::run();
@@ -44,5 +45,7 @@ pub fn run() {
 
     // adv_lifetimes::run();
 
-    prime::run();
+    // prime::run();
+
+    adv_traits::run();
 }
