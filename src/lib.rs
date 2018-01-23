@@ -1,3 +1,7 @@
+//! # learningrust
+//!
+//! 'learningrust' is me doing random hacking while learning rust
+
 pub mod generic_fn;
 pub mod closures;
 pub mod iterators;
