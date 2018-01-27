@@ -28,3 +28,22 @@ impl MyIter for MyStruct {
         }
     }
 }
+
+trait GGraph<Node, Edge> {
+    fn display();
+}
+
+trait AGraph {
+    type Node;
+    type Edge;
+
+    fn display();
+}
+
+fn distance<G: AGraph>(g: G, n0: G::Node, n1: G::Node) -> f32 {
+    0.0
+}
+
+fn dist<N, E, G: GGraph<N, E>>(g: G, n0: N, n1: N) -> f32 {
+    0.0
+}
