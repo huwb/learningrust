@@ -12,7 +12,12 @@ struct MyStruct {
     counter: isize,
 }
 
-impl Iterator for MyStruct {
+pub trait MyIter {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+}
+
+impl MyIter for MyStruct {
     type Item = isize;
     fn next(&mut self) -> Option<Self::Item> {
         self.counter -= 1;
