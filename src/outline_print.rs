@@ -1,13 +1,14 @@
-pub trait OutlinePrint {
-    fn outline_print(&self);
-}
+use std::fmt::Display;
 
-impl OutlinePrint for str {
+pub trait OutlinePrint: Display {
     fn outline_print(&self) {
-        let len = self.len();
+        let output = self.to_string();
+        let len = output.len();
         let stars = "*".repeat(len + 4);
         println!("{}", stars);
-        println!("* {} *", self);
+        println!("* {} *", output);
         println!("{}", stars);
     }
 }
+
+impl OutlinePrint for str {}
