@@ -23,6 +23,7 @@ pub mod adv_lifetimes;
 pub mod prime;
 pub mod adv_traits;
 pub mod outline_print;
+pub mod new_type_pattern;
 
 pub fn run() {
     // longest_string::run();
@@ -48,5 +49,7 @@ pub fn run() {
 
     // prime::run();
 
-    adv_traits::run();
+    // adv_traits::run();
+
+    new_type_pattern::run();
 }
