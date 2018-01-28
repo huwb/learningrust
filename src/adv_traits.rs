@@ -1,5 +1,7 @@
+use ::outline_print::OutlinePrint;
+
 pub fn run() {
-    println!("in run");
+    "Advanced Traits".outline_print();
 
     let g = TestGraph {
         edges: vec![

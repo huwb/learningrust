@@ -22,6 +22,7 @@ pub mod unsafety;
 pub mod adv_lifetimes;
 pub mod prime;
 pub mod adv_traits;
+pub mod outline_print;
 
 pub fn run() {
     // longest_string::run();
